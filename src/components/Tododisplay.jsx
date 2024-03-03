@@ -1,8 +1,9 @@
 import React from 'react'
 import { TiTick } from "react-icons/ti";
 import { MdDeleteForever } from "react-icons/md";
-export default function Tododisplay({todoArray,setTodoArray,taskMessage}) {
-  
+
+export default function Tododisplay({todoArray,setTodoArray}) {
+
   function setCross(e){
     
     e.stopPropagation();
@@ -31,17 +32,18 @@ export default function Tododisplay({todoArray,setTodoArray,taskMessage}) {
     else{
       nodeval=e.target.parentNode
     }
-   const newtdarr=todoArray.filter((value,index)=>(index!==Number(nodeval.id)));
-   setTodoArray(newtdarr) 
+    console.log(nodeval)
+    const newtdarr=todoArray.filter((value,id)=>(value.id!==(nodeval.id)));
+    setTodoArray(newtdarr) 
   }
  
   return (
       <ul style={{display:"flex",flexDirection:"column",width:"100vw",margin:"5%"}} >
        {
        todoArray.map((value,index)=>(
-          <li id={index} key={index} style={{display:"flex",flexDirection:"row",border:"1px solid grey",width:"100vw",height:"8vh",justifyContent:"space-between",textAlign:"right",alignContent:"end",marginBottom:"1vh",borderRadius:"5px"}}>
+          <li key={index} id={value.id} style={{display:"flex",flexDirection:"row",border:"1px solid grey",width:"100vw",height:"8vh",justifyContent:"space-between",textAlign:"right",alignContent:"end",marginBottom:"1vh",borderRadius:"5px"}}>
 
-              <span style={{width:"90vw", border:"1px solid grey",height:"8vh",padding:"2vh 0",fontSize:"large",fontWeight:"Bold",color:"Green",fontFamily:"sans-serif"}}>{value}{taskMessage?<span style={{textDecoration:"none"}}>{taskMessage}</span>:null}</span>
+              <span style={{width:"90vw", border:"1px solid grey",height:"8vh",padding:"2vh 0",fontSize:"large",fontWeight:"Bold",color:"Green",fontFamily:"sans-serif"}}>{value.value}</span>
 
               <span onClick={(e)=>setCross(e)} style={{width:"5vw",height:"8vh",padding:"2vh 0"}}><TiTick     style={{height:"8vh",color:"magenta",fontWeight: "bolder",
               fontSize: "xx-large"}}  /></span>

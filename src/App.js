@@ -3,6 +3,7 @@ import './App.css';
 
 import Todoform from './components/Todoform';
 import Tododisplay from './components/Tododisplay';
+import {v4 as uuidv4} from 'uuid'
 
 import {useState} from 'react'
 
@@ -10,18 +11,22 @@ import {useState} from 'react'
 function App() {
   const[todoItem,setTodoItems]=useState("");
   const[todoArray,setTodoArray]=useState([]);
-  const [taskMessage,setTaskMessage]=useState("")
-  function setItem(e){
-    
-    setTodoItems(e.target.value.toUpperCase())
-    
+  
+  function setItem(e){  
+   
+    setTodoItems(e.target.value)
   }
-  function submitItem(){
-    if(!todoItem) return;
-    const newTodoArray=[...todoArray,todoItem];
+  function submitItem(e){
+    e.preventDefault();
+    if(!todoItem) return alert("Todo Item cannot be empty");
+    const item={
+      value:todoItem,
+      id:uuidv4()
+    }
+    const newTodoArray=[...todoArray,item];
     setTodoArray(newTodoArray);
     setTodoItems("");
-    setTaskMessage("");
+    
   }
   return (
     <div className="App">
@@ -32,7 +37,7 @@ function App() {
       <br/>
      
       
-      <Tododisplay todoArray={todoArray} setTodoArray={setTodoArray} taskMessage={taskMessage} setTaskMessage={setTaskMessage}/>
+      <Tododisplay todoArray={todoArray} setTodoArray={setTodoArray}/>
     </div>
   );
 }
