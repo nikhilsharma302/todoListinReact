@@ -1,36 +1,56 @@
 import React from 'react'
 import { TiTick } from "react-icons/ti";
 import { MdDeleteForever } from "react-icons/md";
-export default function Tododisplay({todoArray,setTodoArray}) {
+export default function Tododisplay({todoArray,setTodoArray,taskMessage}) {
   
   function setCross(e){
+    
     e.stopPropagation();
-    e.target.parentNode.classList.toggle('checked')
-    // console.log(e.target.parentNode.parentNode.childNodes[0].innerText)
+    let nodeval=""
+     if(e.target.parentNode.nodeName==="SPAN"){
+      nodeval=e.target.parentNode.parentNode
+     }
+     else if(e.target.parentNode.nodeName==="svg"){
+      nodeval=e.target.parentNode.parentNode.parentNode
+     }
+     else{
+      nodeval=e.target.parentNode
+     }
+    nodeval.classList.toggle('checked')
+   
   }
   function delItems(e){
     e.stopPropagation(); 
-    const newtd=todoArray.filter((values)=>(values!=(e.target.parentNode.parentNode.childNodes[0].innerText)))  
-    
-    setTodoArray(newtd)
-    
+    let nodeval=""
+    if(e.target.parentNode.nodeName==="SPAN"){
+      nodeval=e.target.parentNode.parentNode
+    }
+    else if(e.target.parentNode.nodeName==="svg"){
+      nodeval=e.target.parentNode.parentNode.parentNode
+    }
+    else{
+      nodeval=e.target.parentNode
+    }
+   const newtdarr=todoArray.filter((value,index)=>(index!==Number(nodeval.id)));
+   setTodoArray(newtdarr) 
   }
  
   return (
-      <ul style={{listStyleType:'none', border:"2px solid,black",width:"100vw",height:"fit-content"}}>
+      <ul style={{display:"flex",flexDirection:"column",width:"100vw",margin:"5%"}} >
        {
        todoArray.map((value,index)=>(
-      <li key={index} style={{width:"100vw",height:"5vh",border:"5px solid green",padding:"5px",margin:"5px"}}>
-        <span style={{height:"0 5vh0 0", padding:"0 10vw",backgroundColor:"grey"}}>{value}
-        </span>
-        <span onClick={(e)=>setCross(e)}><TiTick style={{height:"100%", padding:"0 10vw"}}/></span>
-        <span onClick={(e)=>delItems(e)}><MdDeleteForever  style={{height:"100%",padding:"0 10vw"}} /></span>
-      </li>))
-}
-      
+          <li id={index} key={index} style={{display:"flex",flexDirection:"row",border:"1px solid grey",width:"100vw",height:"8vh",justifyContent:"space-between",textAlign:"right",alignContent:"end",marginBottom:"1vh",borderRadius:"5px"}}>
+
+              <span style={{width:"90vw", border:"1px solid grey",height:"8vh",padding:"2vh 0",fontSize:"large",fontWeight:"Bold",color:"Green",fontFamily:"sans-serif"}}>{value}{taskMessage?<span style={{textDecoration:"none"}}>{taskMessage}</span>:null}</span>
+
+              <span onClick={(e)=>setCross(e)} style={{width:"5vw",height:"8vh",padding:"2vh 0"}}><TiTick     style={{height:"8vh",color:"magenta",fontWeight: "bolder",
+              fontSize: "xx-large"}}  /></span>
+              
+              <span  onClick={(e)=>delItems(e)} style={{width:"5vw",height:"8vh",padding:"2vh 0"}}><MdDeleteForever style={{height:"8vh",color:"red",fontWeight: "bolder",
+              fontSize: "xx-large"}}/></span>
+
+          </li>))
+        }
       </ul>
-      
     )
-  
-    
 }
